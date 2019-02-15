@@ -1,0 +1,65 @@
+
+
+Alice selects a basis f: either rectilinear <R> (-,|) or diagonal <D> (/,\)
+  - analogous to heads/tails
+Alice creates n random bits B=b_0..b_n
+Alice encodes n qubits Q=q_0..q_n based on each b in B and f
+   f   b    q  
+  <R>, 0 -> -
+  <R>, 1 -> |
+  <D>, 0 -> \
+  <D>, 1 -> /
+
+Filter      Pauli     Bridge
+<R>     ->  PauliZ -> 1
+<D>     ->  PauliX -> H
+
+ -  -> |0>
+ |  -> |1>
+ /  -> |+>
+ \  -> |->
+
+Notes
+qubit could be implemented as photon
+  Each qubit is in superposition
+  TODO find out what -, |, / and \ are in qubit notation (and how to set them as such)
+  Probably: define measurement of 1 meaning passed through, 0 means blocked. or something
+
+
+Alice sends photons to Bob
+Bob chooses a sequence of  a random filter (either rectilinear / diagonal) for each incoming photon
+
+Say, Alice encoded the bitstring 'rectilinearly'
+  Then the photons look like this:
+    | | - - | - | - - ...
+
+
+So for a particular photon i, if Bob happens to use the rectilinear (correct) filter:
+  b  q    F
+  0  - + <|> ->   0% chance of passing through, write down 0 in Rectilinear table -> correct!
+  1  | + <|> -> 100% chance of passing through, write down 1 in Rectilinear table -> correct!
+
+But if he uses the diagonal (incorrect) filter:
+  b  q    F
+  0  - + <\> ->  50% chance of passing through,
+        if blocks, then write down 0 in Diagonal table -> correct! (because if Alice HAD used the diagonal filter, it would have been blocked 100% of the time!)
+        if passes, then write down 1 in Diagonal table -> incorrect (as in, the bitstring b_i is actually 0)
+  1  | + </> ->  50% chance of passing through,
+        if blocks, then write down 0 in Diagonal table -> incorrect!
+        if passes, then write down 1 in Diagonal table -> correct!
+
+
+The bitstring in Bob's Rectilinear table (about n/2 bits) will match with Alice's original bitstring for 100%
+The bitstring in Bob's Diagonal table will match with Alice's original bitstring for only 50%, because they were all the result of 45 degree filtering! So this table is random (and random bits match random bits 50% of the time).
+
+Now Bob chooses Rectilinear / Diagonal
+Alice reveals her choice (thereby declaring either herself or Bob the winner)
+To certify this, she sends Bob the original bitstring, which should match the bits in the 'winning' table (Rectilinear in this case)
+(If she tries to cheat, she would have to come up with the sequence that's in Bob's Diagonal table, which is statistically unlikely)
+
+
+
+
+
+
+

@@ -14,8 +14,8 @@
         //  f   b    q    f b q
         // <R>, 0 -> -    T F -
         // <R>, 1 -> | -> T T |
-        // <D>, 0 -> \    F F \
-        // <D>, 1 -> /    F T /  
+        // <D>, 0 -> /    F F /
+        // <D>, 1 -> \    F T \  
         if (rectilinear && not(bit)) {
            // do nothing, qubit is already |0>
             Message("|0>");
