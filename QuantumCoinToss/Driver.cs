@@ -3,7 +3,9 @@
 using Microsoft.Quantum.Simulation.Core;
 using Microsoft.Quantum.Simulation.Simulators;
 
-namespace quantum_coin_toss
+using Operations;
+
+namespace Driver
 {
     class Driver
     {
@@ -11,7 +13,7 @@ namespace quantum_coin_toss
         {
             using (var qsim = new QuantumSimulator())
             {
-                HelloQ.Run(qsim).Wait();
+                Start.Run(qsim).Wait();
             }
         }
     }

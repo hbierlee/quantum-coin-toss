@@ -1,9 +1,9 @@
-﻿namespace quantum_coin_toss
+﻿namespace Operations
 {
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Primitive;
 
-    operation HelloQ () : Unit {
+    operation Start () : Unit {
         Message("Hello quantum world!");
     }
 
