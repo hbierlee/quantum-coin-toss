@@ -3,11 +3,28 @@
     open Microsoft.Quantum.Canon;
     open Microsoft.Quantum.Primitive;
 
-    operation Start () : Unit {
+    operation Start (n : Int) : Unit {
         Message("Hello quantum world!");
+
+        mutable bitstring = new Bool[n];
+        for (idx in 0..n-1) {
+            if (Bernouli(0.5)) {
+                set bitstring[idx] = false;
+            } else {
+                set bitstring[idx] = true;
+            }
+        }
+        
     }
 
-    operation EncodeBitstring (bitstring: Bool[], register : Qubit[], rectilinear: Bool) : Unit {
+    // TODO can be made into multiple experiments efficiently?
+    operation Bernouli (p : Double) : Bool {
+        let outcome = Random([p, (1. - p)]);
+        return outcome == 0;
+        // return false;
+    }
+
+    operation EncodeBitstring (bitstring : Bool[], register : Qubit[], rectilinear : Bool) : Unit {
         for (i in 0..Length(register) - 1) {
             Encode (register[i], rectilinear, bitstring[i]);
         }
