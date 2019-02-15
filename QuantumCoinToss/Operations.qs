@@ -7,6 +7,12 @@
         Message("Hello quantum world!");
     }
 
+    operation EncodeBitstring (bitstring: Bool[], register : Qubit[], rectilinear: Bool) : Unit {
+        for (i in 0..Length(register) - 1) {
+            Encode (register[i], rectilinear, bitstring[i]);
+        }
+    }
+
 
     // encode a single qubit (in |0> state) according to a bit (False for 0, True for 1) and a basis (false for diagonal, true for rectilinear)
     operation Encode (qubit : Qubit, rectilinear: Bool, bit: Bool) : Unit {

@@ -6,24 +6,45 @@
 
     open Operations;
 
-    operation AllocateQubitTest () : Unit {
-        using (q = Qubit()) {
-            Assert([PauliZ], [q], Zero, "Newly allocated qubit must be in |0> state");
-        }
-        
-        Message("Test passed");
-    }
+    // operation DumpTest () : Unit {
+    //     Message("DumpTest/Playground.");
+    //     using (qubit = Qubit()) {
+    //         DumpRegister((), [qubit]);
+    //         X(qubit);
+    //         H(qubit);
+    //         DumpRegister((), [qubit]);
+    //         Reset(qubit);
+    //     }
+    //     Message("Test passed.");
+    // }
 
-    operation DumpTest () : Unit {
-        Message("DumpTest/Playground.");
-        using (qubit = Qubit()) {
-            DumpRegister((), [qubit]);
-            X(qubit);
-            H(qubit);
-            DumpRegister((), [qubit]);
-            Reset(qubit);
+    operation EncodeBitstringTest () : Unit {
+        Message("EncodeBitstringTest.");
+
+        using (register = Qubit[6]) {
+            let bitstring = [true, false, true];
+            EncodeBitstring(bitstring, register[0..2], true);
+
+            Assert([PauliZ], register[0..0], One, "something went wrong..");
+            Assert([PauliZ], register[1..1], Zero, "something went wrong..");
+            Assert([PauliZ], register[2..2], One, "something went wrong..");
+
+            AssertProb([PauliX], register[0..0], One, 0.5, "something went wrong..", 1e-5);
+            AssertProb([PauliX], register[1..1], One, 0.5, "something went wrong..", 1e-5);
+            AssertProb([PauliX], register[2..2], One, 0.5, "something went wrong..", 1e-5);
+
+            EncodeBitstring(bitstring, register[3..5], false);
+
+            Assert([PauliX], register[3..3], One, "something went wrong..");
+            Assert([PauliX], register[4..4], Zero, "something went wrong..");
+            Assert([PauliX], register[5..5], One, "something went wrong..");
+
+            AssertProb([PauliZ], register[3..3], One, 0.5, "something went wrong..", 1e-5);
+            AssertProb([PauliZ], register[4..4], One, 0.5, "something went wrong..", 1e-5);
+            AssertProb([PauliZ], register[5..5], One, 0.5, "something went wrong..", 1e-5);
+
+            ResetAll(register);
         }
-        Message("Test passed.");
     }
 
     operation EncodeTest () : Unit {
