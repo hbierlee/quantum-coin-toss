@@ -13,7 +13,7 @@ namespace Driver
         {
             using (var qsim = new QuantumSimulator())
             {
-                Start.Run(qsim, 100).Wait();
+                Start.Run(qsim, 20, true).Wait();
             }
         }
     }
