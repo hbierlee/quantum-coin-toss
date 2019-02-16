@@ -11,8 +11,6 @@
         // 
         // Alice:
         // 
-        Message("Hello quantum world!");
-
         mutable bitstring = new Bool[n];
         for (idx in 0..n-1) {
             if (RandomBool()) {
@@ -123,20 +121,20 @@
         // <D>, 1 -> \    F T \  
         if (rectilinear && not(bit)) {
            // do nothing, qubit is already |0>
-            Message("|0>");
+            Message("R+0 -> |0>");
         }
         if (rectilinear && bit) { // TODO else if not working for some reason
             X(qubit);   // |1>
-            Message("|1>");
+            Message("R+1 -> |1>");
         }
         if (not(rectilinear) && not(bit)) {
             H(qubit);   // |+>
-            Message("|+>");
+            Message("D+0 -> |+>");
         }
         if (not(rectilinear) && bit) {
             X(qubit);   // |1>
             H(qubit);   // |->
-            Message("|->");
+            Message("D+1 -> |->");
         }
     }
 }
