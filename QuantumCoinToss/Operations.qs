@@ -6,6 +6,7 @@
     open Microsoft.Quantum.Extensions.Convert;
 
     // TODO "rectilinear" Bools might be replaceable for PauliZ/PauliX
+    // TODO make this work both 'auto' mode and 'manual' mode (where Alice and Bob can choose basis)
     operation Start (n : Int, aliceRectilinear: Bool) : Unit {
         // 
         // Alice:
@@ -14,13 +15,12 @@
 
         mutable bitstring = new Bool[n];
         for (idx in 0..n-1) {
-            if (Bernouli(0.5)) {
+            if (RandomBool()) {
                 set bitstring[idx] = false;
             } else {
                 set bitstring[idx] = true;
             }
         }
-
 
         using (register = Qubit[n]) {
             EncodeBitstring(bitstring, register, aliceRectilinear);
@@ -37,7 +37,7 @@
             // TODO better, check ApplyPauli!
 
             for (i in 0..n-1) {
-                if (Bernouli(0.5)) {
+                if (RandomBool()) {
                     set rectilinearTable[i] = ResultAsInt([Measure([PauliZ], [register[i]])]);
                     set diagonalTable[i] = -1;
                 } else {
@@ -50,15 +50,60 @@
                 Message(ToStringB(bitstring[i]) + ": " + ToStringI(rectilinearTable[i]) + "," + ToStringI(diagonalTable[i]));
             }
 
+            let bobRectilinear = RandomBool();
+            if (bobRectilinear) {
+                Message("Bob picks rectilinear.");
+            } else {
+                Message("Bob picks diagonal.");
+            }
+
+            // 
+            // Bob sends bob-basis to Alice
+            // Alice sends alice-basis and bitstring
+            // Bob:
+            // 
+
+            if (aliceRectilinear == bobRectilinear) {
+                Message("Bob wins!");
+            } else {
+                Message("Alice wins!");
+            }
+
+            Message("Verification of rectilinear-table: " + ToStringD(verifyTable(rectilinearTable, bitstring)));
+            Message("Verification of diagonal-table: " + ToStringD(verifyTable(diagonalTable, bitstring)));
+
             ResetAll(register);
         }
     }
 
     // TODO can be made into multiple experiments version efficiently? To generate the bitstring quicker (index -> unsigned int binary)?
-    operation Bernouli (p : Double) : Bool {
-        let outcome = Random([p, (1. - p)]);
+    operation RandomBool () : Bool {
+        let outcome = Random([0.5, 0.5]);
         return outcome == 0;
-        // return false;
+    }
+
+    function verifyTable (table : Int[], bitstring : Bool[]) : Double {
+        mutable count = 0;
+        mutable correct = 0;
+
+        for (i in 0..Length(bitstring)-1) {
+            if (table[i] != -1) {
+                set count = count + 1;
+                if (bitstring[i] == intToBool(table[i])) {
+                    set correct = correct + 1;
+                }
+            }
+        }
+
+        return ToDouble(correct) / ToDouble(count);
+    }
+
+    function intToBool (i : Int) : Bool {
+        if (i == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // TODO probably overkill and can be refactored out

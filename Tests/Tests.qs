@@ -6,18 +6,6 @@
 
     open Operations;
 
-    // operation DumpTest () : Unit {
-    //     Message("DumpTest/Playground.");
-    //     using (qubit = Qubit()) {
-    //         DumpRegister((), [qubit]);
-    //         X(qubit);
-    //         H(qubit);
-    //         DumpRegister((), [qubit]);
-    //         Reset(qubit);
-    //     }
-    //     Message("Test passed.");
-    // }
-
     operation EncodeBitstringTest () : Unit {
         Message("EncodeBitstringTest.");
 
@@ -133,5 +121,15 @@
             ResetAll(qubits);
         }
         Message("Test passed");
+    }
+
+    operation VerifyTableTest () : Unit {
+        let bitstring =      [ false, false, true, true, false, true, false, true, true, false];
+        //                 = [ 0, 0, 1, 1, 0, 1, 0, 1, 1, 0];
+        let correctTable =   [-1, 0, 1, 1,-1,-1, 0,-1,-1, 0];   // 5/5 correct
+        let incorrectTable = [-1, 0, 0, 1,-1,-1, 1,-1,-1, 1];   // 2/5 correct
+
+        AssertAlmostEqual(verifyTable(correctTable, bitstring),   1.);
+        AssertAlmostEqual(verifyTable(incorrectTable, bitstring), .4);
     }
 }
