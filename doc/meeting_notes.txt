@@ -1,0 +1,41 @@
+1. What problem does the paper address?
+- the problem of public key exchange
+  - doing this via QM
+- the problem of coin-toss
+  - doing this via QM
+  - how to cheat
+
+
+2. What solution does the paper propose?
+- [TA] do we have to explain polarisation?
+  - maybe only one paragraph?
+- describe steps of pub_key exchange
+- describe steps of coin-toss
+
+3a. What benefits and drawbacks does the solution have? 
+- advantage: guarentuee of confidentiality, uncopy-able, passive eavesdropping would be impossible
+  - classical: passive eavesdropping can copy your encrypted data (to be broken at a later time, less  future-proof)
+- drawbacks: certain things can't be done via QM: attribution (proving to judge), digital signatures
+- drawbacks: einstein-podolsky-rosen
+- drawback: communication can be disturbedd by noise
+- drawback: we don't have quantum channels/computers yet
+
+3b. Are there other approaches to solve the problem?
+  - how is this done classically?
+    - pub key: diffie helman, double ratchet
+    - coin: original paper
+
+- background
+  - why do we need quantum equivalents to classically solved problems? Because when we get quantum computer, the classical ways will become insecure
+  - report a bit on the state of QC
+    - Google approaching quantum supremacy
+  - 
+- Why do we need to go back to classic communication after exchanging keys in quantum way? What are the drawbacks of staying in quantum communication channel?
+
+- we made a demo
+  - [TA] can we use it in the presentation?
+- in the report, should we explain the 
+  - demo
+  - Q#
+  - how photons/polarization are represented as qubits ?
+- 
