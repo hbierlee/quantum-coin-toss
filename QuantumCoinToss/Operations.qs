@@ -129,23 +129,23 @@
         // <D>, 1 -> \    F T \  
         if (rectilinear && not(bit)){
            // do nothing, qubit is already |0>
-            Message("R+0 : |0>");
+            // Message("R+0 : |0>");
             return (); // since there is no `else if` statement in Q#, we return after each if-statement
         }
         if (rectilinear && bit) {
             X(qubit);   // |1>
-            Message("R+1 : |1>");
+            // Message("R+1 : |1>");
             return ();
         }
         if (not(rectilinear) && not(bit)) {
             H(qubit);   // |+>
-            Message("D+0 : |+>");
+            // Message("D+0 : |+>");
             return ();
         }
         if (not(rectilinear) && bit) {
             X(qubit);   // |1>
             H(qubit);   // |->
-            Message("D+1 : |->");
+            // Message("D+1 : |->");
             return ();
         }
     }
