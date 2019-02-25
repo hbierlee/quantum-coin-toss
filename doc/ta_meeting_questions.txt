@@ -1,0 +1,15 @@
+TA meeting
+==========
+
+questions
+  1. since quantum mechanices in crypto (that is, polarization, filters..) AND key-exechange is already covered in a future lecture, how much of it do we need to re-cover:
+    a) in the report?
+    b) in the presentation?
+  2. Can we demo in the presentation? 
+  3. To fill out the report (maybe even presentation?), what background information would be most interesting to focus on.
+    We have the following two topics:
+      - how do quantum techniques compare to classical ones?
+      - What is the current state of quantum computing (how close are we to needing these algorithms / reach quantum supremacy?)
+
+
+
