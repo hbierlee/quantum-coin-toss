@@ -133,17 +133,23 @@ However, breakthroughs in algorithm design may yet invalidate this assumption, o
 In the next section, we will summarise the quantum methods for solving the problems, which relies on fundamental properties of physics for security.
 
 \section{Problem solution}
+Before presenting the solutions for public-key exchange and remote coin-flipping, we introduce some fundamental techniques.
+All discussion that follows assumes perfect hardware (such as filters, quantum channels, individual photons, etc..).
 
-\subsection{Fundamental technique: uncertainty principle and polarised photons}
-Light exists of photons particles, which can be polarised in different directions, such as vertical (0 degrees, 45 degrees, 90 degrees or 135 degrees.
-It is easy to achieve such a 
+\subsection{The behaviour of polarized photons}
+%TODO IMO these two paragraphs explain everything you need to know about quantum mechanics to understand the algorithms, but there's more in-depth math in the paper. Maybe check with the TA that this is enough for section II.
+Light exists of individual photon particles, which can be polarised at any angle using polarizing filters.
+Four of these polarization axis are important to us: two rectilinear (0 degrees, 90 degrees) and two diagonal (45 degrees, 135 degrees).
+To measure the orientation of a polarized photon, one can again use polarizing filters.
+If the orientation (or basis) of the filter matches the orientation of the photon, the photon will pass through, and if the filter is orthogonal to the photon, the photon will not pass through.
+In other words, rectilinear photons can be measured accurately 100\% of the time (deterministically) if one uses the `correct', rectilinear filter, since the difference in angle between photon and a filter at 0 degrees is always either 0 or 90 degrees.
 
+But suppose the difference is 45 degrees, such as is always the case when you try to measure rectilinear photons with the `wrong', diagonal filter. 
+It happens that the probability of photons passing through this filter is exactly 50\%, which renders the measurement useless.
+Photons that did pass through now have the same polarization as the filter, so re-measuring them tells you nothing about their original orientation.
+Furthermore, we cannot simply clone photons and perform multiple measurements.
+Essentially, you only get one chance to measure a photon.
 
-In quantum physics, there are three properties that we can take advantage of in our algorithms:
-
-\begin{itemize}
-    \item It is impossible to take a measurement the
-\end{itemize}
 
 \subsection{Quantum public key distribution}
 
