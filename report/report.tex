@@ -1,0 +1,160 @@
+\documentclass[oneside,a4paper]{article}
+
+% ========== Preamble (packages, definitions etc.) ==========
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{lmodern}
+\usepackage{float}
+
+\setlength{\parskip}{\baselineskip}
+
+%\newcounter{questionnum} \setcounter{questionnum}{0}
+%\newcommand{\question}[1]{%
+%  \refstepcounter{questionnum}%
+%  \paragraph{Question~\arabic{questionnum}:}{\emph{#1}}}
+
+\newcommand\filltoend{\leavevmode{\unskip
+  \leaders\hrule height.5ex depth\dimexpr-.5ex+0.4pt\hfill\hbox{}%
+  \parfillskip=0pt\endgraf}}
+
+\newcommand{\problem}[2]{%
+	\vspace{-0.7em}
+	\hspace{0.02\textwidth}
+	\begin{minipage}[t][][b]{0.95\textwidth}
+		{\bf \hspace{-0.015\textwidth}\makebox[7.5em][l]{{#1} ~~\filltoend}}%
+		\hspace{1.2mm}{\it #2}%
+	\end{minipage}
+}
+
+\lstset{ % Set the default style for code listings
+	numbers=left, 
+	numberstyle=\scriptsize, 
+	numbersep=8pt,
+	basicstyle=\scriptsize\ttfamily,
+	keywordstyle=\color{blue},
+	stringstyle=\color{red},
+	commentstyle=\color{green!70!black},
+	breaklines=true,
+	frame=single, 
+	language=C++,
+	captionpos=b,
+	tabsize=4,
+	showstringspaces=false
+}
+
+
+% ========== Title page ==========
+
+\title {
+	\includegraphics[width=0.6\textwidth]{UU_logo.pdf}\\[1em]
+	Cryptology \\
+	Report\\[1em]
+	%\\[3em]
+	Quantum cryptography: Public key distribution and coin tossing
+}
+
+\author{
+		Hendrik Bierlee \and
+		Nodari Kankava
+}
+
+\begin{document}
+
+
+
+\maketitle
+\thispagestyle{empty} % Removes page number for front page
+\pagebreak
+
+\newcounter{qcounter}
+\setcounter{qcounter}{1}
+\newcommand{\question}[1]{\par\vspace{10px}\noindent\textbf{Question \theqcounter \stepcounter{qcounter}:} \emph{#1}\vspace{0.5em}\\\noindent}
+
+
+% ========== Document contents ==========
+\section{Introduction}
+
+\subsection{Problem statement of key-distribution}
+%intro Key-Distribution ... 
+% why is key-distribution needed, what are the standard approaches? what guarantees of secrecy can we have? what problems do we encounter?
+In a scenario when Alice and Bob want to communicate securely, they have to use encryption. Strong cryptography relies on the assumption that shared information is unknown to third parties even when everything about cryptosystem is known, except for the key (kirchoff's principle?) (One-time pad guarantees perfect secrecy). ....
+
+% Public key cryptography and how it solves key sharing
+Public key cryptography allows secure distribution of secret key between parties who don't share initial secret information. Public key cryptography makes use of two keys. It is a form of assymetric cryptography. One key (public) is used for encryption and another (private) for decryption. The great thing about this approach is that public key can be shared publicly, anyone can know it, anyone can encrypt using it, but only the owner of private key can decrypt it. (We can see it as an improvement upon kirchoff's principle?)
+    %Public Key Infrustructure
+    %Diffie–Hellman key exchange protocol
+    %double ratchet protocol?
+
+%if two parties can share a key secretly, why not directly share message (no need for cryptography)
+Current standard - use public key cryptography to share a secret key, next communication uses symmetric cryptography.
+The question is if we can share a secret key, why not directly share a message. Public key cryptography is computationally expensive, so it makes sense to use it to share small information, with good guarantees that following communications will remain secret.
+
+
+% Guarantees of secrecy
+
+%eavesdropping problem
+    % maybe move this to quantum solution part?
+Classic information theory assumes that communication can be eavesdropped either passively or actively. There is no protection against copying transmitted information. Communicating parties can verify with high degree of confidence that exchanged message was not modified, but they should assume that information could have been copied. 
+
+% Verification and non-repudiation
+
+%TODO maybe we can abbreviate remote coin-flip problem -> RCP and public key-exchange problem -> PKP
+\subsection{Problem statement of the remote coin-flip problem}
+The ``coin-flip by telephone'' problem was first described in 1981~\cite{blum1981coin}: two distrusting parties, Alice and Bob, want to play a remote game where either party has a 50/50 win-chance, where neither can cheat and where no third party is involved.
+
+
+\subsubsection{Classical solution to the remote coin-flip problem}
+In the same paper, the problem was solved by constructing a one-way function $f$ which is two-to-one, meaning that one can have a pair of inputs $x$ and $y$ that map to the same value $f(x)=f(y)$. An example of such a function is $f(x) =|1/x|$, where every allowed input of $x$ and $-x$ map to $1/x$. Furthermore, $x$ and $y$ have some distinguishing property, for instance, $x$ is always even and $y$ is always odd. Because of the one-way nature of $f$, Alice can randomly select $x$ but it is computationally impossible for her to also find out the corresponding $y$.
+
+After selecting $x$, Alice sends $f(x)=c_{\text{Alice}}$ to Bob (her \textit{commitment} to $x$), and from $f(x)$ Bob cannot know whether Alice used $x$ or $y$.
+\footnote{
+    This idea is reminiscent of a zero-knowledge proof~\cite{goldwasser1989knowledge}, where one party proves they posses certain information without revealing to the other side what that information is.
+    Alice proofs to Bob she committed to one of two choices without revealing her actual choice.
+}
+So, Bob can proclaim a guess to Alice with a 50\% chance of getting it right.
+Subsequently, Alice can claim victory or defeat and proof her original choice of $x$ by sending $x$ to Bob.
+Bob can verify the claim by recognising that $x$ is in fact even, and by computing $f(x)=c_{\text{Alice}}$.
+Alice does not possess $y$, so she cannot possibly cheat by sending Bob an odd value that $f$ maps to $c_{\text{Alice}}$.
+
+A benefit to this problem is that if the messages between Alice and Bob are signed, any attempt at cheating on the part of Alice (say she sends $x'$ such that $f(x') \neq c_{\text{Alice}}$) to a judge.
+
+% Need for quantum solutions
+
+\subsection{Need for new solutions}
+Many cryptography methods are founded on the assumption that some procedures, such as prime factorisation, are computationally hard, i.e. $P \neq NP$.
+A prime example of this is prime factorisation.
+However, breakthroughs in algorithm design may yet invalidate this assumption, or, more on topic, the introduction of quantum computing that can execute algorithms such as Shor's algorithm which can do prime factorisation in polynomial time.
+In the next section, we will summarise the quantum methods for solving the problems, which relies on fundamental properties of physics for security.
+
+\section{Problem solution}
+
+\subsection{Fundamental technique: uncertainty principle and polarised photons}
+Light exists of photons particles, which can be polarised in different directions, such as vertical (0 degrees, 45 degrees, 90 degrees or 135 degrees.
+It is easy to achieve such a 
+
+
+In quantum physics, there are three properties that we can take advantage of in our algorithms:
+
+\begin{itemize}
+    \item It is impossible to take a measurement the
+\end{itemize}
+
+\subsection{Quantum public key distribution}
+
+% As mentioned in section 1.1 classic information theory assumes that digital communications can be passively monitored. Quantum information theory guarantees that communication cannot be passively monitored and even in the presence of active eavesdropper secure communication is possible if the advarsary is not supprassing communications.
+
+\subsection{Quantum coin tossing}
+
+\section{benefits / drawbacks of solution  and other approaches to solve the problem?}
+
+
+\bibliography{sources}
+\bibliographystyle{acm}
+
+\end{document}
