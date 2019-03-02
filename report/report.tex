@@ -130,11 +130,11 @@ A benefit to this problem is that if the messages between Alice and Bob are sign
 Many cryptography methods are founded on the assumption that some procedures, such as prime factorisation, are computationally hard, i.e. $P \neq NP$.
 A prime example of this is prime factorisation.
 However, breakthroughs in algorithm design may yet invalidate this assumption, or, more on topic, the introduction of quantum computing that can execute algorithms such as Shor's algorithm which can do prime factorisation in polynomial time.
-In the next section, we will summarise the quantum methods for solving the problems, which relies on fundamental properties of physics for security.
+In the next section, we will summarise the quantum methods for solving the problems, which rely on fundamental properties of physics for security.
 
 \section{Problem solution}
 Before presenting the solutions for public-key exchange and remote coin-flipping, we introduce some fundamental techniques.
-All discussion that follows assumes perfect hardware (such as filters, quantum channels, individual photons, etc..).
+All discussion that follows assumes perfect hardware (such as filters, quantum channels, the ability to pick and send individual photons, etc..).
 
 \subsection{The behaviour of polarized photons}
 %TODO IMO these two paragraphs explain everything you need to know about quantum mechanics to understand the algorithms, but there's more in-depth math in the paper. Maybe check with the TA that this is enough for section II.
@@ -155,7 +155,27 @@ Essentially, you only get one chance to measure a photon.
 
 % As mentioned in section 1.1 classic information theory assumes that digital communications can be passively monitored. Quantum information theory guarantees that communication cannot be passively monitored and even in the presence of active eavesdropper secure communication is possible if the advarsary is not supprassing communications.
 
-\subsection{Quantum coin tossing}
+\subsection{Quantum remote coin-flip}
+The protocol for a quantum remote coin-flip is as follows:
+\begin{enumerate}
+	\item
+		Alice chooses at random a secret basis (rectilinear or diagonal) and encodes a secret, random bit-string of decent length as polarized photons using her chosen basis.
+		She sends over the photons to Bob on a quantum channel.
+	\item 
+		To win, Bob has to guess Alice's choice of basis.
+		But when Bob receives the photons, he does not know how to measure them deterministically to find out their polarization.
+		The best he can do is switch bases randomly and independently for each photon, so that he at least ends up with a rectilinear measurement table and a diagonal measurement table, one of which is 100\% correct and the other is 50\% correct.
+		Each table should contain about 50\% of the photons.
+		With nothing to go on, Bob has to make a random guess to Alice as to the original basis.
+	\item Alice reveals her basis, and sends over the original bit-string on a classical channel.
+	\item Bob can verify Alice's choice, because he can confirm that the elements of the bit-string matches up 100\% with the corresponding measurement table.
+\end{enumerate}
+
+Like in the classical solution, the key is that one party has to send a commitment to their choice to the other party, without it.
+
+
+
+
 
 \section{benefits / drawbacks of solution  and other approaches to solve the problem?}
 
