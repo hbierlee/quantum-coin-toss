@@ -106,8 +106,7 @@ Classic information theory assumes that communication can be eavesdropped either
 
 %TODO maybe we can abbreviate remote coin-flip problem -> RCP and public key-exchange problem -> PKP
 \subsection{Problem statement of the remote coin-flip problem}
-The ``coin-flip by telephone'' problem was first described in 1981~\cite{blum1981coin}: two distrusting parties, Alice and Bob, want to play a remote game where either party has a 50/50 win-chance, where neither can cheat and where no third party is involved.
-
+The ``coin-flip by telephone'' problem was first described in 1981~\cite{blum1981coin}: two distrusting parties, Alice and Bob, want to play a remote game without a third party where both have an equal win-chance, and neither can cheat.
 
 \subsubsection{Classical solution to the remote coin-flip problem}
 In the same paper, the problem was solved by constructing a one-way function $f$ which is two-to-one, meaning that one can have a pair of inputs $x$ and $y$ that map to the same value $f(x)=f(y)$. An example of such a function is $f(x) =|1/x|$, where every allowed input of $x$ and $-x$ map to $1/x$. Furthermore, $x$ and $y$ have some distinguishing property, for instance, $x$ is always even and $y$ is always odd. Because of the one-way nature of $f$, Alice can randomly select $x$ but it is computationally impossible for her to also find out the corresponding $y$.
@@ -145,7 +144,7 @@ If the orientation (or basis) of the filter matches the orientation of the photo
 In other words, rectilinear photons can be measured accurately 100\% of the time (deterministically) if one uses the `correct', rectilinear filter, since the difference in angle between photon and a filter at 0 degrees is always either 0 or 90 degrees.
 
 But suppose the difference is 45 degrees, such as is always the case when you try to measure rectilinear photons with the `wrong', diagonal filter. 
-It happens that the probability of photons passing through this filter is exactly 50\%, which renders the measurement useless.
+It happens that the probability of photons passing through this filter is exactly 50\%, so the measurement will tell you exactly nothing about the original polarization.
 Photons that did pass through now have the same polarization as the filter, so re-measuring them tells you nothing about their original orientation.
 Furthermore, we cannot simply clone photons and perform multiple measurements.
 Essentially, you only get one chance to measure a photon.
@@ -155,7 +154,7 @@ Essentially, you only get one chance to measure a photon.
 
 % As mentioned in section 1.1 classic information theory assumes that digital communications can be passively monitored. Quantum information theory guarantees that communication cannot be passively monitored and even in the presence of active eavesdropper secure communication is possible if the advarsary is not supprassing communications.
 
-\subsection{Quantum remote coin-flip}
+\subsection{The quantum remote coin-flip protocol}
 The protocol for a quantum remote coin-flip is as follows:
 \begin{enumerate}
 	\item
@@ -164,20 +163,59 @@ The protocol for a quantum remote coin-flip is as follows:
 	\item 
 		To win, Bob has to guess Alice's choice of basis.
 		But when Bob receives the photons, he does not know how to measure them deterministically to find out their polarization.
-		The best he can do is switch bases randomly and independently for each photon, so that he at least ends up with a rectilinear measurement table and a diagonal measurement table, one of which is 100\% correct and the other is 50\% correct.
-		Each table should contain about 50\% of the photons.
+		The best he can do is switch bases randomly and independently for each photon, so that he at least ends up with a half-filled rectilinear measurement table and a half-filled diagonal measurement table, one of which is 100\% correct and the other is 50\% correct.
 		With nothing to go on, Bob has to make a random guess to Alice as to the original basis.
 	\item Alice reveals her basis, and sends over the original bit-string on a classical channel.
 	\item Bob can verify Alice's choice, because he can confirm that the elements of the bit-string matches up 100\% with the corresponding measurement table.
 \end{enumerate}
 
-Like in the classical solution, the key is that one party has to send a commitment to their choice to the other party, without it.
+Like in the classical solution, the key is that one party has to send a commitment to their choice to the other party, without revealing the choice itself.
 
+\section{Benefits and drawbacks of the solution}
+%TODO  and other approaches to solve the problem?
 
+\subsection{Advantages of the quantum remote coin-flip protocol}
 
+\subsubsection{Impossibility of cheating}
+The protocol is protected against cheating by the laws of physics, instead of by computational hardness:
 
+\begin{itemize}
+	\item Given the polarized photons, Bob cannot guess the basis of the polarization with a probability greater than $1/2$.
+	\item Alice has to provide the measurement results of the table with the basis she supposedly picked: if she lies about the basis (because Bob guessed it correctly), she would have to guess the contents of the other table.
+	If $n$ photons were sent, the probability that she can perfectly match the table is $\frac{1}{(n/2)^2}=\frac{4}{n^2}$.
+	%TODO check that this math is correct
+	Getting even one measurement wrong would expose Alice as a cheater.
+	\item Alice could send a mix of rectilinear and diagonal photons, but then she would not be able to verify either table: so even if Bob loses, she won't be able to claim her win by verifying.	
+	%TODO does not totally make sense, Bob cannot win/lose if Alice does not pick a basis
+\end{itemize}
 
-\section{benefits / drawbacks of solution  and other approaches to solve the problem?}
+\subsection{Disadvantages of the quantum remote coin-flip protocol}
+
+\subsubsection{No non-repudation} Since digital signatures cannot be created with quantum cryptography, Alice or Bob could deny that the coin-flip happened (and the other would not be able to prove to a judge that it did happen).
+%TODO source on digital signatures
+%TODO or conversely, they could pretend a coin-flip happened when it did not?
+
+\subsubsection{Need for quantum hardware} %TODO probably for general to both
+Even though the quantum remote coin-flip has been performed experimentally, there is no prediction for when quantum hardware will become available.
+Furthermore, quantum transmissions 
+%TODO ref to the french experiment?
+%TODO oppertunit to talk about how close quantum computing is
+This is also good news, because it means that for now we can still rely on computational hardness to safeguard the classical solution.
+More generally, quantum solutions such as these will become useful on the same day that classical solutions will be compromised.
+
+\subsubsection{Possibility of cheating}
+In theory, Alice can cheat by using the Einstein-Podolsky-Rosen effect, which implies that pairs of polarized photons can be created which always collapse to opposite directions (regardless of in which basis they are measured).
+Alice could encode the bit-string in such pairs, send one photon of each pair to Bob and keep the other.
+If Bob then guesses, say, rectilinear, she can measure her photons in the diagonal basis, thus being able to match the results of Bob's diagonal table, pretending to have used diagonal encoding all along and verifying her `win'.
+
+However, storing and measuring the twin photons with 100\% accuracy is likely impossible in practice.
+
+\subsubsection{Generating random bit-strings}
+The bit-string that Alice encodes needs to be generated by a cryptographically secure pseudo-random number generator.
+In a post-quantum world, a CSPRNG that relies on prime-factorization (such as a RSA generator) would be compromised, so it obviously should not be used in an implementation of this protocol.
+%TODO ref to slides / RSA generator?
+Maybe Alice should just measure rectilinear photons diagonally, instead.
+
 
 
 \bibliography{sources}
