@@ -80,36 +80,31 @@
 % ========== Document contents ==========
 \section{Introduction}
 
+
 \subsection{Problem statement of key-distribution}
-%intro Key-Distribution ... 
-% why is key-distribution needed, what are the standard approaches? what guarantees of secrecy can we have? what problems do we encounter?
-In a scenario when Alice and Bob want to communicate securely, they have to use encryption. Strong cryptography relies on the assumption that shared information is unknown to third parties even when everything about cryptosystem is known, except for the key (kirchoff's principle?) (One-time pad guarantees perfect secrecy). ....
+Key distribution is one of the main issues in cryptography. In a scenario when two parties want to establish secure communication channel, first they need to agree on a shared secret key. This is an issue for symmetric cryptography protocols, where cryptographic key has to be securely shared between sender and receiver. It also becomes unmanageable when frequent key change is required or number of participants in communication increases.
 
-% Public key cryptography and how it solves key sharing
-Public key cryptography allows secure distribution of secret key between parties who don't share initial secret information. Public key cryptography makes use of two keys. It is a form of assymetric cryptography. One key (public) is used for encryption and another (private) for decryption. The great thing about this approach is that public key can be shared publicly, anyone can know it, anyone can encrypt using it, but only the owner of private key can decrypt it. (We can see it as an improvement upon kirchoff's principle?)
-    %Public Key Infrustructure
-    %Diffie–Hellman key exchange protocol
-    %double ratchet protocol?
+\subsection{Classical solution to the public key distribution}
+Public key cryptography allows secure distribution of secret key between parties who don't share initial secret information. Diffie–Hellman key exchange protocol~\cite{diffie1976new} allows two parties to agree on a shared secret key. This protocol is frequently used in systems that also achieve forward secrecy because of its fast key generation.
+%TODO details of Diffie-Hellman key exchange
+%This protocol guarantees that eavesdropper can't guess or break secret key, because discrete logarithm is a difficult and computationally expensive problem.
 
-%if two parties can share a key secretly, why not directly share message (no need for cryptography)
-Current standard - use public key cryptography to share a secret key, next communication uses symmetric cryptography.
-The question is if we can share a secret key, why not directly share a message. Public key cryptography is computationally expensive, so it makes sense to use it to share small information, with good guarantees that following communications will remain secret.
-
-
-% Guarantees of secrecy
+% TODO Guarantees of secrecy
 
 %eavesdropping problem
     % maybe move this to quantum solution part?
 Classic information theory assumes that communication can be eavesdropped either passively or actively. There is no protection against copying transmitted information. Communicating parties can verify with high degree of confidence that exchanged message was not modified, but they should assume that information could have been copied. 
 
-% Verification and non-repudiation
+% TODO Verification and non-repudiation
 
 %TODO maybe we can abbreviate remote coin-flip problem -> RCP and public key-exchange problem -> PKP
 \subsection{Problem statement of the remote coin-flip problem}
-The ``coin-flip by telephone'' problem was first described in 1981~\cite{blum1981coin}: two distrusting parties, Alice and Bob, want to play a remote game without a third party where both have an equal win-chance, and neither can cheat.
+The `coin-flip by telephone' problem was first described in 1981~\cite{blum1981coin}: two distrusting parties, Alice and Bob, want to play a remote game without a third party where both have an equal win-chance, and where neither can cheat.
 
 \subsubsection{Classical solution to the remote coin-flip problem}
-In the same paper, the problem was solved by constructing a one-way function $f$ which is two-to-one, meaning that one can have a pair of inputs $x$ and $y$ that map to the same value $f(x)=f(y)$. An example of such a function is $f(x) =|1/x|$, where every allowed input of $x$ and $-x$ map to $1/x$. Furthermore, $x$ and $y$ have some distinguishing property, for instance, $x$ is always even and $y$ is always odd. Because of the one-way nature of $f$, Alice can randomly select $x$ but it is computationally impossible for her to also find out the corresponding $y$.
+In the same paper, the problem was solved by constructing a one-way function $f$ which is two-to-one, meaning that one can have a pair of inputs $x$ and $y$ that map to the same value $f(x)=f(y)$.
+An example of such a function is $f(x) =|1/x|$, because every allowed input $x$ has a counterpart $-x$ that $f$ maps to the same value (except for $0$, which is undefined).
+Furthermore, $x$ and $y$ have some distinguishing property, for instance, $x$ is always even and $y$ is always odd. Because of the one-way nature of $f$, Alice can randomly select $x$ but it is computationally impossible for her to also find out the corresponding $y$.
 
 After selecting $x$, Alice sends $f(x)=c_{\text{Alice}}$ to Bob (her \textit{commitment} to $x$), and from $f(x)$ Bob cannot know whether Alice used $x$ or $y$.
 \footnote{
@@ -131,9 +126,13 @@ A prime example of this is prime factorisation.
 However, breakthroughs in algorithm design may yet invalidate this assumption, or, more on topic, the introduction of quantum computing that can execute algorithms such as Shor's algorithm which can do prime factorisation in polynomial time.
 In the next section, we will summarise the quantum methods for solving the problems, which rely on fundamental properties of physics for security.
 
+%TODO Add: that Shor breaks DH
+
 \section{Problem solution}
-Before presenting the solutions for public-key exchange and remote coin-flipping, we introduce some fundamental techniques.
-All discussion that follows assumes perfect hardware (such as filters, quantum channels, the ability to pick and send individual photons, etc..).
+Before presenting the solutions for public-key exchange and remote coin-flipping, we briefly introduce some of the fundamental properties of photons that will be used in both solutions.
+%TODO perfect hardware would invalidate the solution, because then the EPR effect would become a problem. we could mention that we assume `good' hardware, but not perfect hardware, because of the EPR effect discussed later on.
+% Old sentence:
+% All discussion that follows assumes perfect hardware (such as filters, quantum channels, the ability to pick and send individual photons, etc..).
 
 \subsection{The behaviour of polarized photons}
 %TODO IMO these two paragraphs explain everything you need to know about quantum mechanics to understand the algorithms, but there's more in-depth math in the paper. Maybe check with the TA that this is enough for section II.
@@ -150,9 +149,36 @@ Furthermore, we cannot simply clone photons and perform multiple measurements.
 Essentially, you only get one chance to measure a photon.
 
 
-\subsection{Quantum public key distribution}
+\subsection{Quantum key distribution}
 
-% As mentioned in section 1.1 classic information theory assumes that digital communications can be passively monitored. Quantum information theory guarantees that communication cannot be passively monitored and even in the presence of active eavesdropper secure communication is possible if the advarsary is not supprassing communications.
+In the quantum key distribution protocols, quantum channel is used to exchange random bits between two parties who haven't initially shared any secret information and then continue conversation using classic communication channel. As soon as both parties share random bits using quantum channel, both parties will be able to verify that quantum key exchange was not disturbed. Using quantum channel compels potential eavesdropper to be active and this will compel eavesdropper to affect shared bits. If they don't detect disturbance, both parties agree to use shared secret bits to encrypt classic communication channel. If they detect that their exchange was disturbed they will try again to securely share enough random bits using a quantum channel to have a guarantee with high probability that their communication is secure.
+The protocol for a quantum key exchange is as follows:
+
+Using a quantum channel:
+\begin{enumerate}
+    \item Alice chooses random bit-string, encodes each bits as polarized photons, switching randomly between rectilinear and diagonal bases and sends polarized photons to Bob.
+    \item Bob independent of Alice, randomly chooses what bases to use to measure photons (rectilinear or diagonal polarization).
+\end{enumerate}
+
+Using a classic channel (with the assumption that it could be monitored, but those messages can't be changed or altered):
+
+\begin{enumerate}
+    \setcounter{enumi}{2}
+    \item Bob reveals for each photon what basis he used to measure (rectilinear or diagonal).
+    \item Alice reveals which basis were correct.
+    \item Alice and Bob use the correct bits to generate a key for use in classic communication channel.
+\end{enumerate}
+
+Because photons have to be measured using random choice of rectilinear or diagonal basis, any measurement by an eavesdropper will alter the message Bob gets and subsequently produce disagreement between Alice and Bob on bits that they should agree on.
+
+\subsection{Disadvantages and possible attacks for quantum key distribution}
+As mentioned in section 1.1 classic information theory assumes that digital communications can be passively monitored. Quantum information theory guarantees that communication cannot be passively monitored and forces the adversary to be active and detectable. However there are possible attacks.
+
+%TODO (no verification who sent the photon)
+%related
+One of the easiest attack is that an eavesdropper can try to suppress communications by introducing noise into a channel or just by trying to measure photons. This won't help with secretly obtaining the key but prevents the key exchange altogether.
+
+More sophisticated attacks involve quantum phenomena that have not yet been demonstrated as possible but exist as a theoretical thought experiment. In this case if an adversary can clone or multiply photons he can measure them in multiple bases and choose correct ones after Alice and Bob share correct bases in public channel.
 
 \subsection{The quantum remote coin-flip protocol}
 The protocol for a quantum remote coin-flip is as follows:
@@ -160,7 +186,7 @@ The protocol for a quantum remote coin-flip is as follows:
 	\item
 		Alice chooses at random a secret basis (rectilinear or diagonal) and encodes a secret, random bit-string of decent length as polarized photons using her chosen basis.
 		She sends over the photons to Bob on a quantum channel.
-	\item 
+	\item
 		To win, Bob has to guess Alice's choice of basis.
 		But when Bob receives the photons, he does not know how to measure them deterministically to find out their polarization.
 		The best he can do is switch bases randomly and independently for each photon, so that he at least ends up with a half-filled rectilinear measurement table and a half-filled diagonal measurement table, one of which is 100\% correct and the other is 50\% correct.
@@ -212,11 +238,45 @@ However, storing and measuring the twin photons with 100\% accuracy is likely im
 
 \subsubsection{Generating random bit-strings}
 The bit-string that Alice encodes needs to be generated by a cryptographically secure pseudo-random number generator.
-In a post-quantum world, a CSPRNG that relies on prime-factorization (such as a RSA generator) would be compromised, so it obviously should not be used in an implementation of this protocol.
+In a post-quantum world, a CSPRNG that relies on prime-factorisation (such as a RSA generator) would be compromised, so it obviously should not be used in an implementation of this protocol.
 %TODO ref to slides / RSA generator?
 Maybe Alice should just measure rectilinear photons diagonally, instead.
 
 
+\section{Implementation of simulation of the quantum remote coin-flip protocol}
+Microsoft's Q\#~\cite{qsharp} project is a quantum development kit for expressing and running simulations of quantum programs on a classical machine.
+With this, we implemented a simulation of the quantum remote coin-flip.
+The end-product is a simulation in two ways: obviously, no actual qubits were used, and secondly, since Q\# does not provide a way to simulate a quantum channel, the communication between Alice and Bob takes place in one process.
+
+\subsection{From photons to qubits}
+Photons are one way to achieve quantum behaviour, but in quantum computing, the implementation (be it photons or otherwise) is abstracted away behind the concept of qubits, which uses linear algebra as foundation.
+A qubit is represented as a vector $\vec{q}=\begin{pmatrix} a \\ b\end{pmatrix}$ where $a, b \in \mathbb{C}$ and $\lvert \vec{q} \rvert =1$.
+Qubits can be manipulated using linear transformations, such as the negation operation $X$ and the Hadamard gate operation $H$:
+
+\begin{equation}
+    X = \begin{pmatrix} 0 & 1 \\ 1 & 0 \\\end{pmatrix} \quad
+    H = \begin{pmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & \frac{-1}{\sqrt{2}} \\\end{pmatrix}
+\end{equation}
+
+Since $\vec{q}$ is a (unit) vector, it can be visualised in 3D space in a unit sphere, the so-called Bloch sphere.
+For our purposes, we don't need the imaginary axis, so we operate in one slice of this sphere: a unit circle.
+
+\begin{figure}
+    \centering
+    \includegraphics{}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+
+%TODO not sure if I should add a cite to the bloch paper cause i never read it \cite{bloch1946nuclear}
+
+The $a$ and $b$ values determine the superposition or quantum state of the qubit, but we cannot obtain these values directly. Instead, we have to measure $\vec{q}$, and the only possible outcomes are either $0$ or $1$, ie. a classical bit (or cbit).
+The result of a measurement is probabilistic, and depends on the value of $a$, $b$ and the type of the measurement.
+In Q\#, we use Pauli measurements, which are 2-by-2 linear transformation matrices that always transform a qubit back to .
+
+
+
+%TODO add link / ref : https://github.com/hbierlee/quantum-coin-toss
 
 \bibliography{sources}
 \bibliographystyle{acm}
