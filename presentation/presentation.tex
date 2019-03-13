@@ -6,14 +6,19 @@
 \usepackage{graphicx}
 \usepackage{blkarray}
 \usepackage{xcolor}
- 
+\usepackage[normalem]{ulem}
+\usepackage{verbatim}
+
+\graphicspath{ {res/} } 
  
 %Information to be included in the title page:
-\title{Alice (and Bob) in \emph{Wonderland}}
+\title{The Adventures of Alice (and Bob) in Wonderland}
 \author{Henk Bierlee \and Nodari Kankava}
 \institute{Uppsala University}
 \date{Spring 2019}
  
+% TODO footer is clipping
+
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
@@ -50,36 +55,86 @@
 
  
 \begin{document}
+
+% \setbeamertemplate{caption}{%
+% \begin{beamercolorbox}[wd=.5\paperwidth, sep=.2ex]{block body}\insertcaption%
+% \end{beamercolorbox}%
+% }
+
+% \setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+
  
 \frame{\titlepage}
  
-\begin{frame}{Remote Coin-Toss Problem}
+\begin{frame}{Problem statement}
+
+\begin{figure}
+    \centering
+    \includegraphics{blum-abstract}
+    \caption{Abstract from \emph{COIN FLIPPING BY TELEPHONE: A PROTOCOL FOR SOLVING IMPOSSIBLE PROBLEMS} by M. Blum (1981)}
+    \label{fig:blum-abstract}
+\end{figure}
 
 \end{frame}
 
-\begin{frame}{Classical Solution}
+\begin{frame}{A classical solution:  llock-box analogy}
+
+\begin{enumerate}
+    \item Alice writes down her call (heads/tails) on paper and locks it in a box with her key
+    \item Alice sends the box (but not the key) to Bob
+    \item Bob tosses the coin and reports outcome to Alice
+    \item Alice reveals who won and sends her key to Bob so he can verify Alice's claim
+\end{enumerate}
+
+Relies on the assumption that Bob cannot open the box, in other words: \emph{computational hardness}.
+
+% TODO maybe skip this whole slide?
 
 \end{frame}
 
-\begin{frame}{Overview}
+\begin{frame}{Presentation overview}
+
+\begin{itemize}
+    \item \sout{Problem statement}
+    \vfill
+    \item Recap: behaviour of polarised photons
+    \vfill
+    \item Remote quantum coin-toss protocol
+    \vfill
+    \item Advantages and disadvantages
+    \vfill
+    \item Questions
+    \vfill
+\end{itemize}
 
 \end{frame}
 
 \begin{frame}{Behaviour of polarised photons}
 
+
+
 \end{frame}
 
 \begin{frame}{Quantum Coin-Toss Protocol}
-
+\begin{itemize}
+    \item Alice encodes a random bit-string with a randomly chosen base and sends them to Bob
+    \item Bob randomly chooses a base for each photon and fills corresponding measurement table and makes a guess.
+    \item Alice reveals the correct base and sends original bit-string over classic communication channel
+    \item Bob verifies that Alice didn't cheat by comparing bit-string to corresponding measurement table
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Impossibility of Cheating}
-
+\begin{itemize}
+    \item Possibility of correct guess is exactly 1/2.
+    \item Alice has to provide all the measurement results.
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Disadvantages}
 \begin{itemize}
-    \item Imperfect Hardware (Bob can cheat) % not sure about this
+    \item Need for quantum hardware
     \item Einstein-Podolsky-Rosen effect
 \end{itemize}
 \end{frame}
@@ -90,3 +145,13 @@
  
 
 \end{document}
+
+
+    % \begin{itemize}
+    %     \item \begin{verbatim}
+    %          0 1 0 1 0 0 
+    %         \end{verbatim}
+    %     % \item \begin{verbatim}
+    %     %         RECTILINEAR
+    %     %     \end{verbatim}
+    % \end{itemize}
