@@ -78,7 +78,7 @@
 
 \end{frame}
 
-\begin{frame}{A classical solution:  llock-box analogy}
+\begin{frame}{A classical solution: lock-box analogy}
 
 \begin{enumerate}
     \item Alice writes down her call (heads/tails) on paper and locks it in a box with her key
@@ -112,23 +112,28 @@ Relies on the assumption that Bob cannot open the box, in other words: \emph{com
 
 \begin{frame}{Behaviour of polarised photons}
 
-
-
 \end{frame}
 
 \begin{frame}{Quantum Coin-Toss Protocol}
-\begin{itemize}
-    \item Alice encodes a random bit-string with a randomly chosen base and sends them to Bob
-    \item Bob randomly chooses a base for each photon and fills corresponding measurement table and makes a guess.
-    \item Alice reveals the correct base and sends original bit-string over classic communication channel
-    \item Bob verifies that Alice didn't cheat by comparing bit-string to corresponding measurement table
-\end{itemize}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth, keepaspectratio]{presentation/res/coin-table.pdf}
+    \caption{Table from \emph{Quantum cryptography: Public key distribution and coin tossing}}
+    \label{fig:my_label}
+\end{figure}
+
+\only<1>{1. Alice encodes a random bit-string with a randomly chosen base and sends them to Bob}
+\only<2>{2. Bob randomly chooses a base for each photon and fills corresponding measurement table and makes a guess}
+\only<3>{3. Alice reveals the correct base and sends original bit-string over classic communication channel}
+\only<4>{4. Bob verifies that Alice didn't cheat by comparing bit-string to corresponding measurement table}
 \end{frame}
 
 \begin{frame}{Impossibility of Cheating}
 \begin{itemize}
+    \item Alice cannot cheat, because she has no information about one of the tables
+    \item Bob cannot cheat, because the photons give no information: he has to guess.
     \item Possibility of correct guess is exactly 1/2.
-    \item Alice has to provide all the measurement results.
 \end{itemize}
 \end{frame}
 
@@ -139,7 +144,7 @@ Relies on the assumption that Bob cannot open the box, in other words: \emph{com
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Questions}
+\begin{frame}{Questions?}
 
 \end{frame}
  
