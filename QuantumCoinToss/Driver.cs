@@ -47,14 +47,14 @@ namespace Driver
 
                 Console.WriteLine("done!");
 
-                System.Console.WriteLine("R D B");
-                System.Console.WriteLine("=====");
+                System.Console.WriteLine("# B R D");
+                System.Console.WriteLine("=======");
                 using(IEnumerator<long> rs = result.rectilinearTable.GetEnumerator())
                 using(IEnumerator<long> ds = result.diagonalTable.GetEnumerator())
                 while (rs.MoveNext() && ds.MoveNext()) {
                     string left = rs.Current == -1 ? " " : rs.Current.ToString();
                     string right = ds.Current == -1 ? " " : ds.Current.ToString();
-                    System.Console.WriteLine($"{left} {right} ?");
+                    System.Console.WriteLine($"? {left} {right}");
                 }
 
                 ConsoleKey keyBob;
@@ -65,14 +65,21 @@ namespace Driver
 
                 bool bobRectilinear = keyBob == ConsoleKey.H;
 
+
+                Console.Write("Alice reports: ");
+                System.Console.ReadKey(true);
+
                 // TODO make this comparison slower / progress bar like "Comparing 2 booleans extra slowly for suspense.. 42,2%"
                 if (aliceRectilinear == bobRectilinear) {
-                    Console.WriteLine("Bob Wins!");
+                    Console.WriteLine("'You won..'");
                 } else {
-                    Console.WriteLine("Alice Wins!");
+                    Console.WriteLine("'I win!'");
                 }
 
-                System.Console.WriteLine("R D B");
+                Console.WriteLine("Alice sends over the original bit-string for verification..");
+                System.Console.ReadKey(true);
+
+                System.Console.WriteLine("B R D");
                 System.Console.WriteLine("=====");
                 using(IEnumerator<long> rs = result.rectilinearTable.GetEnumerator())   // TODO much code duplication, could be cleaned up
                 using(IEnumerator<long> ds = result.diagonalTable.GetEnumerator())
@@ -81,10 +88,13 @@ namespace Driver
                     string r = rs.Current == -1 ? " " : rs.Current.ToString();
                     string d = ds.Current == -1 ? " " : ds.Current.ToString();
                     string b = bs.Current ? "1" : "0";
-                    System.Console.WriteLine($"{r} {d} {b}");
+                    System.Console.WriteLine($"{b} {r} {d}");
                 }
-                Console.WriteLine("Verification of rectilinear-table: " + verifyTable(result.rectilinearTable, result.bitstring));
-                Console.WriteLine("Verification of diagonal-table: " + verifyTable(result.diagonalTable, result.bitstring));
+
+                String rectilinearTableVerificationPercentage = String.Format("{0:0.#}%", verifyTable(result.rectilinearTable, result.bitstring) * 100);
+                String diagonalTableVerificationPercentage = String.Format("{0:0.#}%", verifyTable(result.diagonalTable, result.bitstring) * 100);
+                Console.WriteLine("Verification of rectilinear-table: " + rectilinearTableVerificationPercentage);
+                Console.WriteLine("Verification of diagonal-table: " + diagonalTableVerificationPercentage);
                 return ;
             } else {
                 Console.WriteLine("auto");
