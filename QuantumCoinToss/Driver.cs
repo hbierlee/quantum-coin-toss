@@ -47,8 +47,8 @@ namespace Driver
 
                 Console.WriteLine("done!");
 
-                System.Console.WriteLine("# B R D");
-                System.Console.WriteLine("=======");
+                System.Console.WriteLine("B R D");
+                System.Console.WriteLine("=====");
                 using(IEnumerator<long> rs = result.rectilinearTable.GetEnumerator())
                 using(IEnumerator<long> ds = result.diagonalTable.GetEnumerator())
                 while (rs.MoveNext() && ds.MoveNext()) {
@@ -65,18 +65,21 @@ namespace Driver
 
                 bool bobRectilinear = keyBob == ConsoleKey.H;
 
+                String bobCall = bobRectilinear ? "Heads/Rectilinear" : "Tails/Diagonal";
+                String aliceCall = aliceRectilinear ? "Heads/Rectilinear" : "Tails/Diagonal";
 
+                Console.WriteLine($"Bob calls: 'I call {bobCall}!'");
                 Console.Write("Alice reports: ");
                 System.Console.ReadKey(true);
 
                 // TODO make this comparison slower / progress bar like "Comparing 2 booleans extra slowly for suspense.. 42,2%"
                 if (aliceRectilinear == bobRectilinear) {
-                    Console.WriteLine("'You won..'");
+                    Console.WriteLine($"'I picked {aliceCall}, so you won..'");
                 } else {
-                    Console.WriteLine("'I win!'");
+                    Console.WriteLine($"'I picked {aliceCall}, so I win!'");
                 }
 
-                Console.WriteLine("Alice sends over the original bit-string for verification..");
+                Console.WriteLine("Alice sends over the original bit-string for verification, and Bob checks his tables:");
                 System.Console.ReadKey(true);
 
                 System.Console.WriteLine("B R D");
