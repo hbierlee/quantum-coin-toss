@@ -12,10 +12,10 @@
 \graphicspath{ {res/} } 
  
 %Information to be included in the title page:
-\title{The Adventures of Alice (and Bob) in Wonderland}
-\author{Henk Bierlee \and Nodari Kankava}
+\title{Alice (and Bob) in Wonderland}
+\author{H. Bierlee \and N. Kankava}
 \institute{Uppsala University}
-\date{Spring 2019}
+\date{$\pi$-day 2019}
  
 % TODO footer is clipping
 
@@ -28,7 +28,7 @@
 \definecolor{regionorange}{RGB}{255, 150, 0}
 \definecolor{regionblue}{RGB}{0, 204, 255}
 
-\lstset{ 
+\lstset{
   backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
   basicstyle=\footnotesize,        % the size of the fonts that are used for the code
   breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
@@ -55,15 +55,6 @@
 
  
 \begin{document}
-
-% \setbeamertemplate{caption}{%
-% \begin{beamercolorbox}[wd=.5\paperwidth, sep=.2ex]{block body}\insertcaption%
-% \end{beamercolorbox}%
-% }
-
-% \setbeamertemplate{caption}{\raggedright\insertcaption\par}
-
-
  
 \frame{\titlepage}
  
@@ -72,7 +63,7 @@
 \begin{figure}
     \centering
     \includegraphics{blum-abstract}
-    \caption{Abstract from \emph{COIN FLIPPING BY TELEPHONE: A PROTOCOL FOR SOLVING IMPOSSIBLE PROBLEMS} by M. Blum (1981)}
+    \caption{From \emph{COIN FLIPPING BY TELEPHONE: A PROTOCOL FOR SOLVING IMPOSSIBLE PROBLEMS} by M. Blum (1981)}
     \label{fig:blum-abstract}
 \end{figure}
 
@@ -81,19 +72,22 @@
 \begin{frame}{A classical solution: lock-box analogy}
 
 \begin{enumerate}
-    \item Alice writes down her call (heads/tails) on paper and locks it in a box with her key
+    \item Alice writes down her call (heads/tails) on paper and locks it in a box
     \item Alice sends the box (but not the key) to Bob
-    \item Bob tosses the coin and reports outcome to Alice
+    \item Bob tosses the coin and reports the outcome to Alice
     \item Alice reveals who won and sends her key to Bob so he can verify Alice's claim
 \end{enumerate}
 
-Relies on the assumption that Bob cannot open the box, in other words: \emph{computational hardness}.
-
-% TODO maybe skip this whole slide?
+Relies on the unsure assumption that Bob cannot open the box, in other words: \emph{computational hardness}.
 
 \end{frame}
 
 \begin{frame}{Presentation overview}
+
+\emph{Quantum cryptography:
+Public key distribution and coin tossing}\\
+\quad by Charles H. Bennett and G. Brassard (1984)
+\vfill
 
 \begin{itemize}
     \item \sout{Problem statement}
@@ -102,15 +96,25 @@ Relies on the assumption that Bob cannot open the box, in other words: \emph{com
     \vfill
     \item Remote quantum coin-toss protocol
     \vfill
-    \item Advantages and disadvantages
+    \item Drawbacks
     \vfill
     \item Questions
     \vfill
 \end{itemize}
+\vfill
 
 \end{frame}
 
-\begin{frame}{Behaviour of polarised photons}
+\begin{frame}{Recap: behaviour of polarised photons}
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth, keepaspectratio]{presentation/res/photon-behaviour.png}
+    \caption{From the lecture slides (Feb. 27, 2019)
+    % When a photon is measured in the way it was polarised, we will know its original orientation (and the original bit value). If it is measured with the other filter, we get a random bit value.
+    }
+    \label{fig:my_label}
+\end{figure}
+
 
 \end{frame}
 
@@ -123,31 +127,70 @@ Relies on the assumption that Bob cannot open the box, in other words: \emph{com
     \label{fig:my_label}
 \end{figure}
 
-\only<1>{1. Alice encodes a random bit-string with a randomly chosen base and sends them to Bob}
-\only<2>{2. Bob randomly chooses a base for each photon and fills corresponding measurement table and makes a guess}
-\only<3>{3. Alice reveals the correct base and sends original bit-string over classic communication channel}
+\only<1>{1. Alice encodes a random bit-string with a randomly chosen basis and sends them to Bob}
+\only<2>{2. Bob randomly chooses a basis for each photon and fills corresponding measurement table and makes a guess}
+\only<3>{3. Alice reveals the correct basis and sends original bit-string over classic communication channel}
 \only<4>{4. Bob verifies that Alice didn't cheat by comparing bit-string to corresponding measurement table}
 \end{frame}
 
-\begin{frame}{Impossibility of Cheating}
+\begin{frame}[plain,c]
+    \begin{center}
+        \Huge \emph{And now: ..volunteers?}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Drawbacks}
 \begin{itemize}
-    \item Alice cannot cheat, because she has no information about one of the tables
-    \item Bob cannot cheat, because the photons give no information: he has to guess.
-    \item Possibility of correct guess is exactly 1/2.
+    \item We need \emph{good} quantum hardware..
+        \begin{itemize}
+            \item Otherwise Alice might accidentally send multiple photons, allowing Bob to measure multiple times and guess the filter with $>50\%$ probability
+        \end{itemize}
+    \item ..but we don't want \emph{perfect} quantum hardware.
+        \begin{itemize}
+            \item Otherwise Alice could cheat by `entangling' photons with the so-called Einstein-Podolsky-Rosen effect
+            \item In practice likely impossible to achieve
+        \end{itemize}
+\end{itemize}
+First experimental quantum coin-toss already performed at the Laboratory for Communication and Processing of Information (LTCI) in Paris!
+\end{frame}
+
+
+\begin{frame}{Conclusion}
+\begin{itemize}
+    \item By the properties of quantum mechanics, it is impossible to cheat:
+    \begin{itemize}
+        \item Alice cannot cheat, because she can predict only one table with 100\% accuracy, but not the other
+        \item Bob cannot cheat, because the photons give no information as to the basis he has to guess
+    \end{itemize}
+    \vfill
+    \item So we rely on the \emph{laws of physics} instead of on \emph{computational complexity}
+    \vfill
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Disadvantages}
-\begin{itemize}
-    \item Need for quantum hardware
-    \item Einstein-Podolsky-Rosen effect
-\end{itemize}
-\end{frame}
+\begin{frame}[plain,c]
+%\frametitle{A first slide}
 
-\begin{frame}{Questions?}
+\begin{center}
+    \Huge \emph{Questions..?}
+\end{center}
 
 \end{frame}
- 
+
+
+\begin{frame}[plain,c]
+%\frametitle{A first slide}
+
+\begin{center}
+    \Huge \emph{Thank you for listening!}
+    
+\end{center}
+\vfill
+    \large
+    Report, slides and demo source code available at:\\ \quad \url{https://github.com/hbierlee/quantum-coin-toss}
+    
+\end{frame}
 
 \end{document}
 
