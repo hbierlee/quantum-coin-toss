@@ -34,15 +34,15 @@
 }
 
 \lstset{ % Set the default style for code listings
-	numbers=left, 
-	numberstyle=\scriptsize, 
+	numbers=left,
+	numberstyle=\scriptsize,
 	numbersep=8pt,
 	basicstyle=\scriptsize\ttfamily,
 	keywordstyle=\color{blue},
 	stringstyle=\color{red},
 	commentstyle=\color{green!70!black},
 	breaklines=true,
-	frame=single, 
+	frame=single,
 	language=C++,
 	captionpos=b,
 	tabsize=4,
@@ -132,7 +132,7 @@ To measure the orientation of a polarised photon, one can again use polarising f
 If the orientation (or basis) of the filter matches the orientation of the photon, the photon will pass through, and if the filter is orthogonal to the photon, the photon will not pass through.
 In other words, rectilinear photons can be measured accurately 100\% of the time (deterministically) if one uses the `correct', rectilinear filter, since the difference in angle between photon and a filter at 0 degrees is always either 0 or 90 degrees.
 
-But suppose the difference is 45 degrees, such as is always the case when you try to measure rectilinear photons with a `wrong', diagonal filter. 
+But suppose the difference is 45 degrees, such as is always the case when you try to measure rectilinear photons with a `wrong', diagonal filter.
 It happens that the probability of photons passing through this filter is exactly 50\%, so the measurement will tell you exactly nothing about the original polarisation.
 Photons that did pass through now have the same polarisation as the filter, so re-measuring them tells you nothing about their original orientation.
 Furthermore, we cannot simply clone photons and perform multiple measurements.
@@ -287,7 +287,7 @@ The result of a measurement $M$ is probabilistic, and depends on the value of $\
     \quad P(M=1) = |\beta|^2.
 \end{equation}
 
-Just like with photons, the basis in which we measure can be varied, so we have to specify that too: in this case using the Pauli measurements. 
+Just like with photons, the basis in which we measure can be varied, so we have to specify that too: in this case using the Pauli measurements.
 Two Pauli measurements are of importance: Pauli Z and Pauli X.
 Measuring Pauli Z,~$\ket{0}$ always results in~$0$ and ~$\ket{1}$ always in~$1$.
 However, when measuring Pauli Z of either~$\ket{-}$ or~$\ket{+}$ we get an uniformly random outcome of $0$ and $1$. This is in line with the above equation~\ref{eq:measuring-distribution}.
@@ -333,7 +333,7 @@ operation Encode (qubit : Qubit, rectilinear : Bool, bit : Bool) : Unit {
 }
 \end{lstlisting}
 
-\bibliography{sources}
+\bibliography{tex/sources}
 \bibliographystyle{acm}
 
 \end{document}

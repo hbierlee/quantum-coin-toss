@@ -14,14 +14,14 @@
 % Custom commands
 \def\Legendre(#1,#2){%
 \begin{pmatrix}
-#1\cr 
+#1\cr
 \hdashline[1pt/1pt]
 #2\cr
-\end{pmatrix}}  
+\end{pmatrix}}
 
 
-\graphicspath{ {../res/} {../presentation/res/}} 
- 
+\graphicspath{{../res/}}
+
 %Information to be included in the title page:
 \title{Alice (and Bob) in Wonderland}
 \author{Henk Bierlee}
@@ -62,16 +62,16 @@
   %title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 
- 
+
 \begin{document}
- 
+
 \frame{\titlepage}
- 
+
 \begin{frame}{Problem statement}
 
 \begin{figure}
     \centering
-    \includegraphics{blum-abstract}
+    \includegraphics{blum-abstract.png}
     \caption{From \emph{COIN FLIPPING BY TELEPHONE: A PROTOCOL FOR SOLVING IMPOSSIBLE PROBLEMS} by M. Blum (1981)}
     \label{fig:blum-abstract}
 \end{figure}
@@ -85,7 +85,7 @@
         \begin{itemize}
             \item Both parties have a 50/50 chance of winning
             \item Consequently, neither party can cheat (or it's not in their best interest to attempt to do so)
-        \end{itemize} 
+        \end{itemize}
         \item Non-repudiation: afterwards, either party can prove to a third party who won the game
         \item Cheat-detection: if cheating is attempted, the other party can find out
     \end{itemize}
@@ -105,10 +105,10 @@
 \part{A classical solution~\cite{blum1981coin}} \frame{\partpage}
 
 \begin{frame}{One-way functions}
-    
+
     A \emph{normally secure} one-way function~$f$ is an efficiently computable function whose inverse cannot be computed efficiently: given~$f(x)$, it is infeasible to find the input~$x$. \\~\\
     Possible example:~$c = b^e \ (\textrm{mod}\ m)$ (modular exponentiation, solving for~$e$)\\~\\
-    
+
     A \emph{completely secure} one-way function~$f$ has the additional property that given~$f(x)$, one cannot determine some non-trivial property of~$x$ with~$>50\%$ probability (for instance, the even or oddness of~$x$).
 \end{frame}
 
@@ -120,19 +120,19 @@
         \item Bob (randomly) guesses whether~$x$ is even or odd
         \item Alice reveals whether Bob was correct (and sends the original input~$x$ so Bob can verify that~$f(x) = x$)
     \end{enumerate}
-    
+
     $f(x)$ constitutes Alice's \emph{commitment} to her call of $x$. Since $f$ is one-to-one, there is no other value that $f$ maps to $f(x)$.
 \end{frame}
 
 
 \begin{frame}{Another approach}
     However, completely secure one-way functions are hard to find and may not exist at all! But maybe we can do it with a normally secure one-way function?\\~\\
-    
+
     A \emph{two-to-one} function~$f$ maps exactly two elements from its domain to each element of its range: for each input~$x$, there always exists a second value~$y \neq x$ for which~$f(y) = f(x)$.\\~\\
-    
+
     Example: \only<1>{$f(x) = |x|$?}
     \only<2>{$f(x) = \frac{1}{|x|}$}
-    
+
 \end{frame}
 
 \begin{frame}{A classical solution}{Basic concept}
@@ -145,10 +145,10 @@
             \item Example: when~$x$ is even,~$y$ is odd
         \end{itemize}
     \end{itemize}
-    
+
     \pause
     Then, basically as before: Alice randomly selects~$x$, sends~$f(x)$ to Bob, Bob guesses the property, and Alice sends~$x$ for verification\\~\\
-    
+
     Alice's inability to find a second, distinct value~$y$ that~$f$ will also map to~$f(x)$ prevents her from cheating.
 \end{frame}
 
@@ -163,42 +163,42 @@
         \item The Jacobi~\footnote{Generalisation of the Legendre symbol} symbol~$\Legendre(x,n)$ (for odd positive integers~$n$ and arbitrary integers~$x$) has values~$0$,~$+1$ or~$-1$ and is efficiently computable
         \item The group $\mathbb{Z}_n^*$ holds all integers less than $n$ which are relatively prime to $n$ (meaning that numbers in $\mathbb{Z}_n^*$ have no common divisors with~$n$ except~$1$)
     \end{enumerate}
-    
+
     \pause
     Roughly speaking, $n$ (from point 2) can provide a one-way  function $f_n$ with inputs from~$\mathbb{Z}_n^*$ of which exactly half the solutions of the inverse will have~$\Legendre(x,n)=+1$ (and the other half~$\Legendre(x,n)=-1$).
 \end{frame}
-    
+
 % \begin{frame}{A classical solution}{Central theorem}
 %     Putting this all together it turns out that: For $a \in \mathbb{Z}_n^*$, exactly half the solutions of $a \equiv x^2 \ (\textrm{mod}\ 4)$ have $\Legendre(x,n) = +1$ (the other half have $\Legendre(x,n) = -1$) (uniformity)
-    
-%     In other words, we can use $n$ as a coin-flip generator, because $\mathbb{Z}_n^*$ contains numbers 
-    
-    
+
+%     In other words, we can use $n$ as a coin-flip generator, because $\mathbb{Z}_n^*$ contains numbers
+
+
 %     For some $x,y \in \mathbb{Z}_n^*$, half the solutions of the equitaion $y^2 \equiv x^2 \ (\textrm{mod}\ 4)$
 %     For any odd positive integer $n$, the following statements are equivalent:
-    
+
 %     \begin{enumerate}
 %         \item There exist $x,y \in \mathbb{Z}_n^*$ such that $x^2 \equiv y^2 \ (\textrm{mod}\ 4)$ and $\Legendre(x,n) \not = \Legendre(y,n)$ (two-to-one + distinguishing property)
 %         \item For $a \in \mathbb{Z}_n^*$, exactly half the solutions of $a = x^2 \ (\textrm{mod}\ 4)$ have $\Legendre(x,n) = +1$ (the other half have $\Legendre(x,n) = -1$) (uniformity)
 %     \end{enumerate}
-    
+
 %     If have $n$
 %     which is the product of primes (like point 2)
-%     Jacobi symbol~$f_n(x) = \Legendre(x,n)$ is a normally secure two-to-one function for $n$ (from point 2) and for any $x$ in the group $\mathbb{Z}_n^*$ 
+%     Jacobi symbol~$f_n(x) = \Legendre(x,n)$ is a normally secure two-to-one function for $n$ (from point 2) and for any $x$ in the group $\mathbb{Z}_n^*$
 % \end{frame}
 
 % \begin{frame}{A classical solution}{Central theorem}
-%     It turns out that if we have 
+%     It turns out that if we have
 %     For any odd positive integer $n$, the following statements are equivalent:
-    
+
 %     \begin{enumerate}
 %         \item There exist $x,y \in \mathbb{Z}_n^*$ such that $x^2 \equiv y^2 \ (\textrm{mod}\ 4)$ and $\Legendre(x,n) \not = \Legendre(y,n)$ (two-to-one + distinguishing property)
 %         \item For $a \in \mathbb{Z}_n^*$, exactly half the solutions of $a = x^2 \ (\textrm{mod}\ 4)$ have $\Legendre(x,n) = +1$ (the other half have $\Legendre(x,n) = -1$) (uniformity)
 %     \end{enumerate}
-    
+
 %     If have $n$
 %     which is the product of primes (like point 2)
-%     Jacobi symbol~$f_n(x) = \Legendre(x,n)$ is a normally secure two-to-one function for $n$ (from point 2) and for any $x$ in the group $\mathbb{Z}_n^*$ 
+%     Jacobi symbol~$f_n(x) = \Legendre(x,n)$ is a normally secure two-to-one function for $n$ (from point 2) and for any $x$ in the group $\mathbb{Z}_n^*$
 % \end{frame}
 
 
@@ -252,29 +252,29 @@
         \end{itemize}
         \item Since a photon cannot be duplicated (`no-cloning theorem') and it loses its original polarisation after measurement, you only get one chance to measure it.
     \end{itemize}
-    
+
 % Light exists of individual photon particles, which can be polarised at any angle using polarising filters.
 % Four of these polarisation axis are important to us: two rectilinear (0 degrees, 90 degrees) and two diagonal (45 degrees, 135 degrees).
 % To measure the orientation of a polarised photon, one can again use polarising filters.
 % If the orientation (or basis) of the filter matches the orientation of the photon, the photon will pass through, and if the filter is orthogonal to the photon, the photon will not pass through.
 % In other words, rectilinear photons can be measured accurately 100\% of the time (deterministically) if one uses the `correct', rectilinear filter, since the difference in angle between photon and a filter at 0 degrees is always either 0 or 90 degrees.
 
-% But suppose the difference is 45 degrees, such as is always the case when you try to measure rectilinear photons with a `wrong', diagonal filter. 
+% But suppose the difference is 45 degrees, such as is always the case when you try to measure rectilinear photons with a `wrong', diagonal filter.
 % It happens that the probability of photons passing through this filter is exactly 50\%, so the measurement will tell you exactly nothing about the original polarisation.
 % Photons that did pass through now have the same polarisation as the filter, so re-measuring them tells you nothing about their original orientation.
 % Furthermore, we cannot simply clone photons and perform multiple measurements.
 % Essentially, you only get one chance to measure a photon, and even though there is theoretically infinite information in a photon (if the polarisation is on a continuous spectrum), measurement will only yield one bit of information.
-    
+
 \end{frame}
 
 \begin{frame}{Behaviour of polarised photons}{Example}
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth, keepaspectratio]{presentation/res/photon-behaviour.png}
+    \includegraphics[width=\textwidth, keepaspectratio]{photon-behaviour}
     \caption{From the Cryptology lecture slides (Feb. 27, 2019)
     % When a photon is measured in the way it was polarised, we will know its original orientation (and the original bit value). If it is measured with the other filter, we get a random bit value.
     }
-    \label{fig:my_label}
+    \label{fig:photon_behaviour}
 \end{figure}
 
 
@@ -284,9 +284,9 @@
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth, keepaspectratio]{presentation/res/coin-table.pdf}
+    \includegraphics[width=\textwidth, keepaspectratio]{coin-table.pdf}
     \caption{Table from \emph{Quantum cryptography: Public key distribution and coin tossing}}
-    \label{fig:my_label}
+    \label{fig:coin_table}
 \end{figure}
 
 \only<1>{1. Alice encodes a random bit-string with a randomly chosen basis and sends them to Bob}
@@ -345,29 +345,26 @@ First experimental quantum coin-toss already performed at the Laboratory for Com
 
 \begin{center}
     \Huge \emph{Thank you for listening!}
-    
+
 \end{center}
 \vfill
     \large
     Report, slides and demo source code available at:\\ \quad \url{https://github.com/hbierlee/quantum-coin-toss}
-    
+
 \end{frame}
 
 \begin{frame}{References}
         % \frametitle{References}
         \bibliographystyle{amsalpha}
-        \bibliography{sources}
+        \bibliography{tex/sources}
 \end{frame}
-
-
-
 
 \end{document}
 
 
     % \begin{itemize}
     %     \item \begin{verbatim}
-    %          0 1 0 1 0 0 
+    %          0 1 0 1 0 0
     %         \end{verbatim}
     %     % \item \begin{verbatim}
     %     %         RECTILINEAR

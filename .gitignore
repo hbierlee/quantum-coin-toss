@@ -1,8 +1,18 @@
 bin
 obj
 
-report/*.aux
-report/*.log
-report/*.out
-report/*.pdf
-report/*.synctex.gz
+tex/**/*.aux
+tex/**/*.fdb_latexmk
+tex/**/*.log
+tex/**/*.blg
+tex/**/*.out
+tex/**/*.pdf
+tex/**/*.synctex.gz
+tex/**/*.bbl
+tex/**/*.fls
+tex/**/*.nav
+tex/**/*.snm
+tex/**/*.toc
+
+
+tags
